@@ -2,6 +2,8 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import cors from "cors";
+import path from "path";
+import fs from "fs";
 import db from "./db";
 import { v4 as uuidv4 } from "uuid";
 
@@ -26,6 +28,13 @@ app.use("/api/projects/:projectId/tasks", tasksRouter);
 app.use("/api/projects/:projectId/messages", messagesRouter);
 
 app.get("/api/health", (_req, res) => res.json({ ok: true }));
+
+// Serve built frontend
+const clientDist = path.join(__dirname, "../../client/dist");
+if (fs.existsSync(clientDist)) {
+  app.use(express.static(clientDist));
+  app.get("*", (_req, res) => res.sendFile(path.join(clientDist, "index.html")));
+}
 
 // Socket.io real-time layer
 io.on("connection", (socket) => {
