@@ -16,7 +16,7 @@ let socket: Socket | null = null;
 
 function getSocket(): Socket {
   if (!socket) {
-    socket = io({ path: "/socket.io" });
+    socket = io({ path: "/socket.io", extraHeaders: { "bypass-tunnel-reminder": "true" } });
   }
   return socket;
 }

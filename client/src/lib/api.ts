@@ -4,7 +4,7 @@ const BASE = "/api";
 
 async function req<T>(url: string, opts?: RequestInit): Promise<T> {
   const res = await fetch(BASE + url, {
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "bypass-tunnel-reminder": "true" },
     ...opts,
   });
   if (!res.ok) {
